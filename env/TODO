@@ -1,0 +1,5 @@
+# enviroment
+1. 集成 git/hg/bzr/svn/... 的配置
+2. 字符集(locale/LC_ALL/...)的设置 (适应中文)
+3. 时区的设置
+4. 或许当 user 是 root 时有些配置会不一样

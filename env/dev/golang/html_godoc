@@ -1,0 +1,28 @@
+#!/bin/bash
+
+SEARCH=0
+FORCE_INDEX=0
+case "$1" in
+	"s" | "S" | "search" | "Search" ) SEARCH=1 ;;
+esac
+case "$2" in
+	"f" | "F" | "force" | "Force" ) FORCE_INDEX=1 ;;
+esac
+
+INDEX_DIR="$HOME/godoc"
+mkdir -p $INDEX_DIR
+INDEX_FILE="${INDEX_DIR}/index"
+if (( SEARCH == 1 )) ; then
+	if (( FORCE_INDEX == 1 )) ; then
+		rm -f ${INDEX_FILE}
+	fi
+	if [ ! -f ${INDEX_FILE} ] ; then
+		godoc -index=true -write_index=true -index_files=${INDEX_FILE}
+	fi
+fi
+
+if (( SEARCH == 1 )) ; then
+	godoc -http=:6060 -index=true -index_files=${INDEX_FILE}
+else
+	godoc -http=:6060
+fi

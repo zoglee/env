@@ -1,0 +1,55 @@
+#!/bin/bash
+
+_ENV_DIR=`dirname $0`
+ENV_DIR=`cd $_ENV_DIR; pwd`
+ENV_MAGIC="ppBxaJRMAn"
+
+uid=`id -u`
+if [ $uid -eq 0 ] ; then
+	read -p "You are root, are you sure to install the enviroment? (yes/no)" reply
+	if [ "x$reply" != "xyes" ] ; then
+		echo "Bye!"
+		exit 0
+	fi
+fi
+
+PROFILE_NAME=".profile"
+PROFILE="$HOME/$PROFILE_NAME"
+if [ ! -f $PROFILE ] ; then
+	PROFILE_NAME=".bash_profile"
+	PROFILE="$HOME/$PROFILE_NAME"
+	if [ ! -f $PROFILE ] ; then
+		echo "Can't find neither $HOME/.profile nor $HOME/.bash_profile, abort!"
+		exit 1
+	fi
+fi
+
+if [ -f $PROFILE -a ! -w $PROFILE ] ; then
+	echo "Failed: have no write permission to $PROFILE"
+	exit 1
+fi
+
+TIME_SIG=`date +%s`
+
+echo "Backup current enviroment ..."
+BACKUP_DIR="./backup_${TIME_SIG}"
+mkdir -p $BACKUP_DIR
+[[ $? != 0 ]] && echo "Failed: cannot create the backup dir($BACKUP_DIR)" && exit 1
+[[ -d $HOME/.vim ]] && mv -f $HOME/.vim $BACKUP_DIR/vim
+[[ -f $HOME/.vimrc ]] && mv -f $HOME/.vimrc $BACKUP_DIR/vimrc
+if [ -f $PROFILE ] ; then
+	cp $PROFILE $BACKUP_DIR/$PROFILE_NAME
+	sed -i "/${ENV_MAGIC}/d" $PROFILE
+fi
+
+echo
+echo "Setting new enviroment ..."
+ln -s $ENV_DIR/vim $HOME/.vim
+ln -s $ENV_DIR/vimrc $HOME/.vimrc
+mkdir -p $HOME/vim_backup
+echo "source ${ENV_DIR}/enviroment # for install: ${ENV_MAGIC} timesig: ${TIME_SIG}" >> $PROFILE
+
+echo
+echo "Finish"
+
+exit 0

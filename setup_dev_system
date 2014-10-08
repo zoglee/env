@@ -1,0 +1,42 @@
+#!/bin/bash
+
+CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
+
+# apt-get
+apt-get remove -y nano
+apt-get autoremove
+
+apt-get install -y libunwind8-dev
+apt-get install -y libjemalloc-dev libgoogle-perftools-dev
+apt-get install -y lib64bz2-1.0 libbz2-dev p7zip-full liblz4-dev zlib1g-dev liblzma-dev
+apt-get install -y libboost-dev libboost-test-dev
+apt-get install -y libgflags-dev libgoogle-glog-dev libsnappy-dev libprotobuf-dev protobuf-compiler libprotoc-dev
+apt-get install -y libyaml-cpp-dev libjsoncpp-dev libcurl4-openssl-dev libc-ares-dev
+
+apt-get install -y vim lrzsz sshpass tree build-essential coreutils cmake cmake-curses-gui exuberant-ctags
+apt-get install -y dstat linux-tools-common linux-tools-$(uname -r)
+apt-get install -y git-all mercurial bzr subversion git-svn
+apt-get install -y supervisor ipython graphviz
+
+# source install
+# rocksdb:
+ROCKSDB_PKG=  # eg: $HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.tar.gz
+if [ -n "$ROCKSDB_PKG" ] ; then
+	ROCKSDB_INSTALL_DIR="/tmp/rocksdb_install_$RANDOM"
+	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/rocksdb-rocksdb-3.5"
+	rm -rf $ROCKSDB_INSTALL_DIR
+	mkdir -p $ROCKSDB_INSTALL_DIR
+	tar -xvf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
+	cd $ROCKSDB_BUILD_DIR # begin
+	CXXFLAGS=-fPIC make all -j$CPU_NUM # compile
+	[[ $? != 0 ]] && echo "make rocksdb failed, abort!" && exit 1
+	rm -rf /usr/local/include/rocksdb /usr/local/bin/{ldb,sst_dump} /usr/local/lib/librocksdb.a # clear previous install
+	cp -r ./include/rocksdb /usr/local/include/ && cp ldb sst_dump /usr/local/bin/ && cp librocksdb.a /usr/local/lib/ # install
+	cd - #end
+	rm -rf $ROCKSDB_INSTALL_DIR
+fi
+
+# system setting tuning
+echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
+
+# TODO(zog): sanity_check

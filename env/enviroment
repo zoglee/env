@@ -1,0 +1,50 @@
+# self bash eviroments
+# usage (choose one, not both):
+# (1) source this 'enviroment' file in the ~/.bash_profile just fine
+# (2) source this 'enviroment' file in the ~/.profile if you have no ~/.bash_profile
+
+# my common aliases
+alias v='ls -l'
+alias vt='ls -lt'
+alias vh='ls -lh'
+alias va='ls -lA'
+alias vah='ls -lhA'
+alias vf='ls -liAh'
+alias manp='man -M /usr/share/man/zh_CN.UTF-8/'
+alias dfh='df -h'
+alias duh='du -h'
+alias ifc='/sbin/ifconfig'
+alias my='mysql --skip-column-names -A'
+alias html_godoc='~/env/dev/golang/html_godoc'
+
+# my exports
+export HISTTIMEFORMAT="%F-%T: "
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+export CMAKE_ROOT=/usr/local/share/cmake-2.8
+
+# my PS1
+#PS1='[\[\e[31;1m\]\u@\[\e[36m\]\H \w]\$\[\e[m\] '
+PS1='[\u@\H \w]\$ '
+
+
+# GO ENV
+# GO alias
+alias goesrc='cd ~/g/src'
+alias goebin='cd ~/g/bin'
+alias goepkg='cd ~/g/pkg'
+alias godev='gosrc'
+#export GOARCH=amd64
+#export GOOS=linux
+#export GOMAXPROCS=4
+#export GOGC=100
+export GORACE="strip_path_prefix=~/g/src/"
+export GOROOT=~/go
+export GOBIN=~/bin
+export GOPATH=~/g:~/dragon_golang
+export PATH=$GOBIN:$GOROOT/bin:$PATH
+
+# finally
+ulimit -n 1000000
+ulimit -c 1000000000
+echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernal/shmmax
+export PATH=/usr/local/bin:$PATH
