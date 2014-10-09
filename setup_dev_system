@@ -23,7 +23,7 @@ apt-get install -y supervisor ipython graphviz
 ROCKSDB_PKG=  # eg: $HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.tar.gz
 if [ -n "$ROCKSDB_PKG" ] ; then
 	ROCKSDB_INSTALL_DIR="/tmp/rocksdb_install_$RANDOM"
-	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/rocksdb-rocksdb-3.5"
+	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$(basename $ROCKSDB_PKG .tar.gz)"
 	rm -rf $ROCKSDB_INSTALL_DIR
 	mkdir -p $ROCKSDB_INSTALL_DIR
 	tar -xvf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
