@@ -46,5 +46,5 @@ export PATH=$GOBIN:$GOROOT/bin:$PATH
 # finally
 ulimit -n 1000000
 ulimit -c 1000000000
-echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernal/shmmax
+echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
 export PATH=/usr/local/bin:$PATH
