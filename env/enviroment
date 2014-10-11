@@ -40,7 +40,7 @@ alias godev='gosrc'
 export GORACE="strip_path_prefix=~/g/src/"
 export GOROOT=~/go
 export GOBIN=~/bin
-export GOPATH=~/g:~/dragon_golang
+export GOPATH=~/g
 export PATH=$GOBIN:$GOROOT/bin:$PATH
 
 # finally
