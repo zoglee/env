@@ -35,7 +35,7 @@ echo "Backup current enviroment ..."
 BACKUP_DIR="./backup_${TIME_SIG}"
 mkdir -p $BACKUP_DIR
 [[ $? != 0 ]] && echo "Failed: cannot create the backup dir($BACKUP_DIR)" && exit 1
-[[ -d $HOME/.vim ]] && mv -f $HOME/.vim $BACKUP_DIR/vim
+[[ -d $HOME/.vim ]] && mv -f $HOME/.vim $BACKUP_DIR/vim && rm -f .vim
 [[ -f $HOME/.vimrc ]] && mv -f $HOME/.vimrc $BACKUP_DIR/vimrc
 if [ -f $PROFILE ] ; then
 	cp $PROFILE $BACKUP_DIR/$PROFILE_NAME
