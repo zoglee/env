@@ -25,18 +25,7 @@ apt-get install -y clang-3.5 clang-3.5-doc
 # rocksdb:
 ROCKSDB_PKG=  # eg: $HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.tar.gz
 if [ -n "$ROCKSDB_PKG" ] ; then
-	ROCKSDB_INSTALL_DIR="/tmp/rocksdb_install_$RANDOM"
-	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$(basename $ROCKSDB_PKG .tar.gz)"
-	rm -rf $ROCKSDB_INSTALL_DIR
-	mkdir -p $ROCKSDB_INSTALL_DIR
-	tar -xvf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
-	cd $ROCKSDB_BUILD_DIR # begin
-	CXX=clang++ CXXFLAGS=-fPIC USE_SSE=" -msse -msse4.2 " make all -j$CPU_NUM # compile
-	[[ $? != 0 ]] && echo "make rocksdb failed, abort!" && exit 1
-	rm -rf /usr/local/include/rocksdb /usr/local/bin/{ldb,sst_dump} /usr/local/lib/librocksdb.a # clear previous install
-	cp -r ./include/rocksdb /usr/local/include/ && cp ldb sst_dump /usr/local/bin/ && cp librocksdb.a /usr/local/lib/ # install
-	cd - #end
-	rm -rf $ROCKSDB_INSTALL_DIR
+    ./tools/install_rocksdb $ROCKSDB_PKG
 fi
 
 # system setting tuning

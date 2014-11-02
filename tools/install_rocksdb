@@ -1,18 +1,24 @@
 #!/bin/bash
 
-ROCKSDB_PKG=$HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.1.tar.gz  # eg: $HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.tar.gz
+if [ $# -ne 1 ] ; then
+    echo "Usage: $0 <path to rocksdb-3.x.x.tar.gz>"
+    exit 1
+fi
+
+ROCKSDB_PKG="$1"
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 if [ -n "$ROCKSDB_PKG" ] ; then
     ROCKSDB_INSTALL_DIR="/tmp/rocksdb_install_$RANDOM"
-	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$(basename $ROCKSDB_PKG .tar.gz)"
+    BASE_BUILD_DIR=`basename $ROCKSDB_PKG .tar.gz | sed "s/rocksdb/rocksdb-rocksdb/"`
+	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$BASE_BUILD_DIR"
     rm -rf $ROCKSDB_INSTALL_DIR
     mkdir -p $ROCKSDB_INSTALL_DIR
     tar -xvf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
     cd $ROCKSDB_BUILD_DIR # begin
-    CXX=clang++ CXXFLAGS=-fPIC USE_SSE=" -msse -msse4.2 " make all -j$CPU_NUM # compile
+    CXX=g++ CXXFLAGS=-fPIC USE_SSE=" -msse -msse4.2 " make all -j$CPU_NUM # compile
     [[ $? != 0 ]] && echo "make rocksdb failed, abort!" && exit 1
-    rm -rf /usr/local/include/rocksdb /usr/local/bin/{ldb,sst_dump} /usr/local/lib/librocksdb.a # clear previous install
-    cp -r ./include/rocksdb /usr/local/include/ && cp ldb sst_dump /usr/local/bin/ && cp librocksdb.a /usr/local/lib/ # install
+    rm -rf /usr/local/include/rocksdb /usr/local/bin/{db_bench,ldb,sst_dump} /usr/local/lib/librocksdb.a # clear previous install
+    cp -r ./include/rocksdb /usr/local/include/ && cp db_bench ldb sst_dump /usr/local/bin/ && cp librocksdb.a /usr/local/lib/ # install
     cd - #end
     rm -rf $ROCKSDB_INSTALL_DIR
 fi
