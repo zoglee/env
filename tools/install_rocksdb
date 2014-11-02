@@ -9,7 +9,7 @@ if [ -n "$ROCKSDB_PKG" ] ; then
     mkdir -p $ROCKSDB_INSTALL_DIR
     tar -xvf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
     cd $ROCKSDB_BUILD_DIR # begin
-    CXXFLAGS=-fPIC make all -j$CPU_NUM # compile
+    CXX=clang++ CXXFLAGS=-fPIC USE_SSE=" -msse -msse4.2 " make all -j$CPU_NUM # compile
     [[ $? != 0 ]] && echo "make rocksdb failed, abort!" && exit 1
     rm -rf /usr/local/include/rocksdb /usr/local/bin/{ldb,sst_dump} /usr/local/lib/librocksdb.a # clear previous install
     cp -r ./include/rocksdb /usr/local/include/ && cp ldb sst_dump /usr/local/bin/ && cp librocksdb.a /usr/local/lib/ # install
