@@ -4,7 +4,7 @@ CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 
 # apt-get
 apt-get remove -y nano
-apt-get autoremove
+apt-get autoremove -y
 
 apt-get install -y libunwind8-dev
 apt-get install -y libjemalloc-dev libgoogle-perftools-dev
