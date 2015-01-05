@@ -11,28 +11,24 @@ alias va='ls -lA'
 alias vah='ls -lhA'
 alias vf='ls -liAh'
 alias manp='man -M /usr/share/man/zh_CN.UTF-8/'
-alias dfh='df -h'
-alias duh='du -h'
 alias ifc='/sbin/ifconfig'
 alias my='mysql --skip-column-names -A'
 alias html_godoc='~/env/dev/golang/html_godoc'
+alias sp='supervisorctl status'
+alias wip='echo 120.132.77.25'
+alias cdd="cd /data/dragon"
 
 # my exports
+export HISTSIZE=100000
 export HISTTIMEFORMAT="%F-%T: "
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:/usr/local/lib:$HOME/lib:$LD_LIBRARY_PATH
 export CMAKE_ROOT=/usr/local/share/cmake-2.8
-
-# my PS1
-#PS1='[\[\e[31;1m\]\u@\[\e[36m\]\H \w]\$\[\e[m\] '
-PS1='[\u@\H \w]\$ '
-
 
 # GO ENV
 # GO alias
-alias goesrc='cd ~/g/src'
-alias goebin='cd ~/g/bin'
-alias goepkg='cd ~/g/pkg'
-alias godev='gosrc'
+alias gsrc='cd ~/g/src'
+alias gbin='cd ~/g/bin'
+alias gpkg='cd ~/g/pkg'
 #export GOARCH=amd64
 #export GOOS=linux
 #export GOMAXPROCS=4
@@ -42,6 +38,10 @@ export GOROOT=~/go
 export GOBIN=~/bin
 export GOPATH=~/g
 export PATH=$GOBIN:$GOROOT/bin:$PATH
+
+# PS1
+#PS1='[\[\e[31;1m\]\u@\[\e[36m\]\H \w]\$\[\e[m\] '
+PS1='[\u@\H \w]\$ '
 
 # finally
 ulimit -n 1000000
