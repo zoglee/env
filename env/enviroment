@@ -16,6 +16,7 @@ alias my='mysql --skip-column-names -A'
 alias html_godoc='~/env/dev/golang/html_godoc'
 alias sp='supervisorctl status'
 alias wip='echo 120.132.77.25'
+alias lip='echo 10.136.0.67'
 alias cdd="cd /data/dragon"
 
 # my exports
