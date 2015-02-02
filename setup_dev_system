@@ -21,6 +21,7 @@ apt-get install -y dstat linux-tools-common linux-tools-$(uname -r)
 apt-get install -y git-all mercurial bzr subversion git-svn
 apt-get install -y supervisor ipython graphviz
 apt-get install -y clang-3.5 clang-3.5-doc
+apt-get install -y python-setuptools
 apt-get install -y nodejs-dev nodejs-legacy npm
 apt-get install -y libmysql++-dev
 
