@@ -9,7 +9,7 @@ ROCKSDB_PKG="$1"
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 if [ -n "$ROCKSDB_PKG" ] ; then
     ROCKSDB_INSTALL_DIR="/tmp/rocksdb_install_$RANDOM"
-    BASE_BUILD_DIR=`basename $ROCKSDB_PKG .tar.gz | sed "s/rocksdb/rocksdb-rocksdb/"`
+	BASE_BUILD_DIR=$(basename $ROCKSDB_PKG .tar.gz)
 	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$BASE_BUILD_DIR"
     rm -rf $ROCKSDB_INSTALL_DIR
     mkdir -p $ROCKSDB_INSTALL_DIR
