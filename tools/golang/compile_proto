@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# This scripts is used to integrate *.proto files to your project.
+# How to use this script?
+# 1. Modify the first var(PROJECT_DIR) to the relative-dir against
+#    the GOPATH/src which your project lives in;
+#    eg: say, your $PROJECT_ROOT_PATH is in dir:
+#        PROJECT_ROOT_PATH=$HOME/g/src/zoglee/learn/proto3
+#        and your project lives in GOPATH=$HOME/g, so you should set to
+#        PROJECT_DIR = $PROJECT_ROOT_PATH - $GOPATH/src
+#                      = "$HOME/g/src/zoglee/learn/proto3" - "$HOME/g/src/"
+#                      = "zoglee/learn/proto3" # NOTE(zog): No more slash!
+#
+# 2. Put your modified "compile_proto" scripts to your $PROJECT_ROOT_PATH,
+#    eg: $HOME/g/src/zoglee/learn/proto3/compile_proto
+#
+# 3. Create your $PROTO_ROOT_DIR, which all the proto files live in.
+#    eg: mkdir -p $HOME/g/src/zoglee/learn/proto3/pb
+#        
+# 4. Put proto files to subdirs, "one package per subdir" against the $PROTO_ROOT_DIR,
+#    eg: mkdir -p $HOME/g/src/zoglee/learn/proto3/pb/{foo,bar}
+#
+# 5. For echo proto file which has "import", modify the "import" to:
+#    import "@PROJECT_PB_DIR@/other.proto" and other.proto MUST located
+#    at $PROTO_ROOT_DIR/other/other.proto (or rendered from other.proto.tmpl)
+#    AND, RENAME all the proto file to ori.proto to ori.proto.tmpl
+#
+# 6. Go to $PROJECT_ROOT_PATH, and invoke this scripts(./compile_proto)
+#    Usage:
+#    (1) ./compile_proto           # clean and compile proto
+#    (2) ./compile_proto noclean   # don't clean and compile proto
+#    (3) ./compile_proto justclean # clean and then exit 0
+# 
+
+PROJECT_DIR="zoglee/learn/proto3"
+
+MY_DIR=$(cd $(dirname $0); pwd)
+GOPATH_SRC_DIR="$HOME/g/src"
+PROTO_DIR_NAME="pb"
+PROTO_ABS_DIR="$GOPATH_SRC_DIR/$PROJECT_DIR/$PROTO_DIR_NAME" # eg: $HOME/g/src/zoglee/learn/proto3/pb
+PROJECT_PB_DIR="$PROJECT_DIR/$PROTO_DIR_NAME" # eg: zoglee/learn/proto3/pb
+
+if [ $# -eq 1 ]; then
+	ARG1="$1"
+fi
+
+cd $MY_DIR >/dev/null 2>&1
+
+if [ "x$ARG1" != "xnoclean" ]; then
+	find . -name *.pb.go -exec rm -f '{}' \;
+	find . -name *.proto -exec rm -f '{}' \;
+fi
+
+if [ "x$ARG1" == "xjustclean" ]; then
+	exit 0
+fi
+
+find $PROTO_ABS_DIR -name *.proto.tmpl | while read tmpl; do
+	protoname=$(echo $tmpl | sed 's/.proto.tmpl$/.proto/')
+	sed "s#@PROJECT_PB_DIR@#$PROJECT_PB_DIR#" $tmpl > $protoname
+done
+
+dirs=$(find $PROTO_ABS_DIR -type d -exec basename '{}' \; | grep -v "$PROTO_DIR_NAME")
+for d in $dirs
+do
+	#echo "[PROTOC]: protoc -I$GOPATH_SRC_DIR --go_out=$GOPATH_SRC_DIR $PROTO_ABS_DIR/$d/*.proto ..."
+	protoc -I$GOPATH_SRC_DIR --go_out=$GOPATH_SRC_DIR $PROTO_ABS_DIR/$d/*.proto
+done
+
+cd - >/dev/null 2>&1
+
+exit 0
