@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# apt-get
+apt-get remove -y nano
+apt-get autoremove -y
+
+apt-get install -y libgles2-mesa-dev libopenal-dev
