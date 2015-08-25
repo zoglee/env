@@ -2,6 +2,24 @@
 
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 
+cat "
+*               soft    core        unlimited
+*               hard    core        unlimited
+*               soft    nofile      500001
+*               hard    nofile      500001
+" >> /etc/security/limits.conf
+
+cat "
+ulimit -n 500001
+ulimit -c unlimited
+" >> ~/.bashrc
+
+ulimit -n 500001
+ulimit -c unlimited
+
+# system setting tuning
+echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
+
 # apt-get
 apt-get remove -y nano
 apt-get autoremove -y
@@ -36,8 +54,5 @@ ROCKSDB_PKG=  # eg: $HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.tar.gz
 if [ -n "$ROCKSDB_PKG" ] ; then
     ./tools/install_rocksdb $ROCKSDB_PKG
 fi
-
-# system setting tuning
-echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
 
 # TODO(zog): sanity_check
