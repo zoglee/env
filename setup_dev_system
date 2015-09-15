@@ -2,14 +2,14 @@
 
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 
-cat "
+echo "
 *               soft    core        unlimited
 *               hard    core        unlimited
 *               soft    nofile      500001
 *               hard    nofile      500001
 " >> /etc/security/limits.conf
 
-cat "
+echo "
 ulimit -n 500001
 ulimit -c unlimited
 " >> ~/.bashrc
