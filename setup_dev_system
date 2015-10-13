@@ -3,19 +3,9 @@
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 
 echo "
-*               soft    core        unlimited
-*               hard    core        unlimited
-*               soft    nofile      500001
-*               hard    nofile      500001
-" >> /etc/security/limits.conf
-
-echo "
-ulimit -n 500001
-ulimit -c unlimited
+alias v='ls -l'
+alias va='ls -la'
 " >> ~/.bashrc
-
-ulimit -n 500001
-ulimit -c unlimited
 
 # system setting tuning
 echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
