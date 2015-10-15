@@ -14,8 +14,6 @@ alias cdd='cd /data/dragon'
 " >> ~/.bashrc
 fi
 
-exit
-
 # system setting tuning
 echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
 
