@@ -16,5 +16,11 @@ if [ -n "$PROTOBUF_PKG" ]; then
     cd $PROTOBUF_BUILD_DIR
     CXX=g++ ./configure --with-pic
     make -j$CPU_NUM
+
+    # remove old (2.5 and prev_installed_30beta):
+    rm -f /usr/bin/protoc
+    rm -f /usr/lib/x86_64-linux-gnu/libproto* /usr/lib/libproto*
+    rm -rf /usr/include/google/protobuf
+
     make install
 fi
