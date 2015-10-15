@@ -9,11 +9,11 @@ ROCKSDB_PKG="$1"
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 if [ -n "$ROCKSDB_PKG" ] ; then
     ROCKSDB_INSTALL_DIR="/tmp/rocksdb_install_$RANDOM"
-	BASE_BUILD_DIR=$(basename $ROCKSDB_PKG .tar.gz)
-	ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$BASE_BUILD_DIR"
+    BASE_BUILD_DIR=$(basename $ROCKSDB_PKG .tar.gz)
+    ROCKSDB_BUILD_DIR="${ROCKSDB_INSTALL_DIR}/$BASE_BUILD_DIR"
     rm -rf $ROCKSDB_INSTALL_DIR
     mkdir -p $ROCKSDB_INSTALL_DIR
-    tar -xvf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
+    tar -xf $ROCKSDB_PKG -C $ROCKSDB_INSTALL_DIR
     cd $ROCKSDB_BUILD_DIR # begin
     CXX=g++ CXXFLAGS=-fPIC USE_SSE=" -msse -msse4.2 " make all -j$CPU_NUM # compile
     [[ $? != 0 ]] && echo "make rocksdb failed, abort!" && exit 1

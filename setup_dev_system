@@ -54,4 +54,10 @@ if [ -n "$ROCKSDB_PKG" ] ; then
     ./tools/install_rocksdb $ROCKSDB_PKG
 fi
 
+# protobuf 3.0 beta
+PROTOBUF_PKG="./3rd/protobuf-cpp-3.0.0-beta-1.tar.gz"
+if [ -n "$PROTOBUF_PKG" ]; then
+    ./tools/install_protobuf $PROTOBUF_PKG
+fi
+
 # TODO(zog): sanity_check

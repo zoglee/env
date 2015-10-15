@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -ne 1 ] ; then
+    echo "Usage: $0 <path to protobuf-cpp-3.0.0-beta-1.tar.gz>"
+    exit 1
+fi
+
+PROTOBUF_PKG="$1"
+CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
+if [ -n "$PROTOBUF_PKG" ]; then
+    PROTOBUF_INSTALL_DIR="/tmp/protobuf_install_$RANDOM"
+    PROTOBUF_BUILD_DIR="${PROTOBUF_INSTALL_DIR}/protobuf-3.0.0-beta-1"
+    rm -rf $PROTOBUF_INSTALL_DIR
+    mkdir -p $PROTOBUF_INSTALL_DIR
+    tar -xf $PROTOBUF_PKG -C $PROTOBUF_INSTALL_DIR
+    cd $PROTOBUF_BUILD_DIR
+    CXX=g++ ./configure --with-pic
+    make -j$CPU_NUM
+    make install
+fi
