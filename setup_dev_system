@@ -47,6 +47,9 @@ rm -f $(which clang++)
 ln -sf $(which clang-3.5) /usr/bin/clang
 ln -sf $(which clang++-3.5) /usr/bin/clang++
 
+cp ./vimrc ~/.vimrc
+mkdir -p ~/vim_backup
+
 # source install
 # rocksdb:
 ROCKSDB_PKG=  # eg: $HOME/pkg/rocksdb/rocksdb-rocksdb-3.5.tar.gz
