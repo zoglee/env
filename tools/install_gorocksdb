@@ -1,0 +1,1 @@
+CGO_CFLAGS="-I/usr/local/include" CGO_LDFLAGS="/usr/local/lib/librocksdb.a /usr/lib/x86_64-linux-gnu/liblz4.a -lstdc++ -lm -lz -lbz2 -lsnappy" go get github.com/tecbot/gorocksdb
