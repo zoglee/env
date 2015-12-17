@@ -14,7 +14,7 @@ if [ -n "$PROTOBUF_PKG" ]; then
     mkdir -p $PROTOBUF_INSTALL_DIR
     tar -xf $PROTOBUF_PKG -C $PROTOBUF_INSTALL_DIR
     cd $PROTOBUF_BUILD_DIR
-    CXX=g++ ./configure --with-pic
+    CXX=g++ ./configure --with-pic --prefix=/usr
     make -j$CPU_NUM
 
     # remove old (2.5 and prev_installed_30beta):

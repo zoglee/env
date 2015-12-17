@@ -2,20 +2,40 @@
 
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 
-if ! grep -q "SETUP_ENV_MAGIC=142857" ~/.bashrc; then
+if ! grep -q "SETUP_ENV_MAGIC=142857" ~/bashrc; then
 	echo "
 # SETUP_ENV_MAGIC=142857
+# my exports
+export HISTSIZE=100000
+export HISTTIMEFORMAT="%F-%T: "
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:/usr/local/lib:\$HOME/lib:\$LD_LIBRARY_PATH
+export CMAKE_ROOT=/usr/local/share/cmake-2.8
+
+# GO ENV
+# GO alias
+export GOPATH=~/g
+export PATH=/usr/local/go/bin:~/g/bin:\$PATH
+
+# PS1
+PS1='[\\u@\\H \\w]\\$ '
+
 alias v='ls -l'
 alias va='ls -la'
 alias ifc='/sbin/ifconfig'
 alias supervisorctl='sudo supervisorctl'
 alias sp='supervisorctl status'
 alias cdd='cd /data/dragon'
-" >> ~/.bashrc
+
+echo \$(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
+
+export PATH=/usr/local/bin:\$PATH
+" >> ~/bashrc
 fi
 
+exit
+
 # system setting tuning
-echo $(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
+source ~/.bashrc
 
 # apt-get
 apt-get remove -y nano
