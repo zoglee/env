@@ -2,7 +2,7 @@
 
 CPU_NUM=$(cat /proc/cpuinfo | grep -wc processor)
 
-if ! grep -q "SETUP_ENV_MAGIC=142857" ~/bashrc; then
+if ! grep -q "SETUP_ENV_MAGIC=142857" ~/.bashrc; then
 	echo "
 # SETUP_ENV_MAGIC=142857
 # my exports
@@ -29,10 +29,8 @@ alias cdd='cd /data/dragon'
 echo \$(( 100 * 1024 * 1024 * 1024 )) > /proc/sys/kernel/shmmax
 
 export PATH=/usr/local/bin:\$PATH
-" >> ~/bashrc
+" >> ~/.bashrc
 fi
-
-exit
 
 # system setting tuning
 source ~/.bashrc
